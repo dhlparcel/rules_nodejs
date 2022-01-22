@@ -136,6 +136,9 @@ def _esbuild_impl(ctx):
     if ctx.attr.max_threads > 0:
         env["GOMAXPROCS"] = str(ctx.attr.max_threads)
 
+    if ctx.attr.node_path:
+        env["NODE_PATH"] = str(ctx.attr.node_path)
+
     execution_requirements = {}
     if "no-remote-exec" in ctx.attr.tags:
         execution_requirements = {"no-remote-exec": "1"}
@@ -324,6 +327,10 @@ Sets all --minify-* flags
 
 See https://esbuild.github.io/api/#minify for more details
             """,
+        ),
+        "node_path": attr.string(
+          mandatory = False,
+          doc = """Sets the `NODE_PATH" variable"""
         ),
         "output": attr.output(
             mandatory = False,
